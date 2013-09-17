@@ -87,10 +87,10 @@ class TreePreorderLabeling8 {
 	 * @param string $a A valid label
 	 * @return array<string>
 	 */
-	public static function path($a) {
-		$path = array();
-		while($a = static::up($a)) $path[] = $a;
-		return array_reverse($path);
+	public static function ancestors($a) {
+		$ancestors = array();
+		while($a = static::up($a)) $ancestors[] = $a;
+		return array_reverse($ancestors);
 	}
 
 	/**

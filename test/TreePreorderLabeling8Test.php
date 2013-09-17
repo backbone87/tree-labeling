@@ -222,7 +222,7 @@ class TreePreorderLabeling8Test {
 		}
 	}
 
-	public static function pathTest() {
+	public static function ancestorsTest() {
 		self::sendHeader();
 		foreach(array(
 			""							=> array(),
@@ -255,11 +255,11 @@ class TreePreorderLabeling8Test {
 			"\x80\x7F\x7F\x80\x80"		=> array("\x80", "\x80\x7F\x7F\x80"),
 
 		) as $l => $e) {
-			$path = TreePreorderLabeling8::path($l);
-			echo $e === $path ? 'ok' : 'fail';
+			$ancestors = TreePreorderLabeling8::ancestors($l);
+			echo $e === $ancestors ? 'ok' : 'fail';
 			echo PHP_EOL;
-			if($path !== $e) {
-				foreach($e as $a) self::printbin($a); echo PHP_EOL; foreach($path as $a) self::printbin($a);
+			if($ancestors !== $e) {
+				foreach($e as $a) self::printbin($a); echo PHP_EOL; foreach($ancestors as $a) self::printbin($a);
 			}
 		}
 	}
@@ -323,7 +323,7 @@ class TreePreorderLabeling8Test {
 		self::offsetTest();
 		self::levelTest();
 		self::upTest();
-		self::pathTest();
+		self::ancestorsTest();
 		self::splitTest();
 	}
 
