@@ -16,12 +16,15 @@ class PreorderLabel8 {
 	const LAST = 0x02;
 
 	/**
+	 * Creates a new label instance from the given label binary or, if absent,
+	 * the root node label.
+	 *
 	 * @param mixed $label
 	 * @throws InvalidArgumentException If the label is not valid and can not be
 	 * 		sanitized
 	 * @return PreorderLabel8
 	 */
-	public static function create($label) {
+	public static function create($label = null) {
 		$label = PreorderLabeling8::sanitize($label);
 		if($label === null) {
 			throw new InvalidArgumentException('#1 must be a valid sanitizable label');
