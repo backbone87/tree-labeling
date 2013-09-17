@@ -1,6 +1,26 @@
 <?php
 
-class TreePreorderLabeling8 {
+namespace bbit\util\tree;
+
+/**
+ * Utility class for manipulation and generation of tree label that binary sort
+ * in the preorder of the represented tree.
+ *
+ * The format of the labels is derived from:
+ * http://dbs.uni-leipzig.de/file/Insert_Friendly-TR2005.pdf
+ *
+ * A tree label consists of multiple level labels that amount corrospond to the
+ * depth of the tree. Removing the last level label from a tree label gives the
+ * tree label of the parent node.
+ *
+ * A level label consists of a variable number of bytes, where the last bit of
+ * the last byte of the level label must be 0. All other preceding bytes must
+ * end with an 1 bit. NUL bytes are not allowed, so the last byte must have some
+ * other bit set.
+ *
+ * @author Oliver Hoff <oliver@hofff.com>
+ */
+class PreorderLabeling8 {
 
 	/**
 	 * Returns a valid label by converting the given value to a string and
@@ -37,7 +57,7 @@ class TreePreorderLabeling8 {
 	public static function descendants($a) {
 		$n = strlen($a);
 		if(!$n--) return null;
-		$a[$n] = $a[$n] | "\1";
+		$a[$n] = $a[$n] | "\1"; // same as $a[$n] |= "\1" ?
 		return $a;
 	}
 
@@ -50,8 +70,8 @@ class TreePreorderLabeling8 {
 	 */
 	public static function offset($a) {
 		$n = strlen($a) - 1;
-		if($n == -1) { return null; }
-		while($n-- && ($a[$n] & "\1") === "\1");
+		if($n == -1) return null;
+		while($n-- && ($a[$n] & "\1") === "\1"); // same as $n-- && $a[$n] & "\1" ?
 		return $n + 1;
 	}
 
@@ -62,7 +82,7 @@ class TreePreorderLabeling8 {
 	 * @return string The last level label of $a
 	 */
 	public static function level(&$a) {
-		$i = static::offset($a);
+		$i = self::offset($a);
 		if($i === null) { $a = null; return ''; }
 		$level = substr($a, $i);
 		$a = substr($a, 0, $i);
@@ -77,7 +97,7 @@ class TreePreorderLabeling8 {
 	 * @return string|null
 	 */
 	public static function up($a, &$level = null) {
-		$level = static::level($a);
+		$level = self::level($a);
 		return $a;
 	}
 
@@ -89,7 +109,7 @@ class TreePreorderLabeling8 {
 	 */
 	public static function ancestors($a) {
 		$ancestors = array();
-		while($a = static::up($a)) $ancestors[] = $a;
+		while($a = self::up($a)) $ancestors[] = $a;
 		return array_reverse($ancestors);
 	}
 
@@ -101,7 +121,7 @@ class TreePreorderLabeling8 {
 	 */
 	public static function split($a) {
 		$levels = array();
-		while(strlen($a)) $levels[] = static::level($a);
+		while(strlen($a)) $levels[] = self::level($a);
 		return array_reverse($levels);
 	}
 
@@ -144,13 +164,13 @@ class TreePreorderLabeling8 {
 	 */
 	public static function children($a, $n = 1) {
 		$i = strlen($a);
-		$children = array(static::child($a));
+		$children = array(self::child($a));
 		$n = max(0, intval($n) - 1); $p = 2;
 		while($n--) {
-			$children[] = static::sibling('', $children[0], $i);
+			$children[] = self::sibling('', $children[0], $i);
 			$m = min($n, $p - 2);
-			while($m-- && $n) { $n--; $children[] = static::sibling($children[$m], $children[$m + 1], $i); }
-			if($n) { $n--; $children[] = static::sibling($children[$p - 2], '', $i); $p *= 2; }
+			while($m-- && $n) { $n--; $children[] = self::sibling($children[$m], $children[$m + 1], $i); }
+			if($n) { $n--; $children[] = self::sibling($children[$p - 2], '', $i); $p *= 2; }
 			sort($children, SORT_STRING);
 		}
 		return $children;
@@ -175,7 +195,7 @@ class TreePreorderLabeling8 {
 	 */
 	public static function sibling($a, $b, $i = null) {
 		$n = strlen($a); $m = strlen($b);
-		$i === null && $i = static::offset($n ? $a : $b);
+		$i === null && $i = self::offset($n ? $a : $b);
 		for(;;) {
 			if($i >= $n) {
 				while($i < $m && $b[$i] === "\1") $i++;
@@ -232,14 +252,14 @@ class TreePreorderLabeling8 {
 	 * @return array<string> The sibling labels
 	 */
 	public static function siblings($a, $b, $n = 1, $i = null) {
-		$i === null && $i = static::offset(strlen($a) ? $a : $b);
-		$siblings = array(static::sibling($a, $b, $i));
+		$i === null && $i = self::offset(strlen($a) ? $a : $b);
+		$siblings = array(self::sibling($a, $b, $i));
 		$n = max(0, intval($n) - 1); $p = 2;
 		while($n--) {
-			$siblings[] = static::sibling($a, $siblings[0], $i);
+			$siblings[] = self::sibling($a, $siblings[0], $i);
 			$m = min($n, $p - 2);
-			while($m-- && $n) { $n--; $siblings[] = static::sibling($siblings[$m], $siblings[$m + 1], $i); }
-			if($n) { $n--; $siblings[] = static::sibling($siblings[$p - 2], $b, $i); $p *= 2; }
+			while($m-- && $n) { $n--; $siblings[] = self::sibling($siblings[$m], $siblings[$m + 1], $i); }
+			if($n) { $n--; $siblings[] = self::sibling($siblings[$p - 2], $b, $i); $p *= 2; }
 			sort($siblings, SORT_STRING);
 		}
 		return $siblings;

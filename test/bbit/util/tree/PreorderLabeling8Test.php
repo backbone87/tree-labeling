@@ -1,8 +1,8 @@
 <?php
 
-include '../src/TreePreorderLabeling8.php';
+include '../../../../src/bbit/tree/util/PreorderLabeling8.php';
 
-class TreePreorderLabeling8Test {
+class PreorderLabeling8Test {
 
 	public static function printbin($a, $x = true) {
 		self::sendHeader();
@@ -47,7 +47,7 @@ class TreePreorderLabeling8Test {
 
 		) as $a) {
 			$e = $a[1] === true ? $a[0] : $a[1];
-			$l = TreePreorderLabeling8::sanitize($a[0]);
+			$l = PreorderLabeling8::sanitize($a[0]);
 			echo $e === $l ? 'ok' : 'fail';
 			self::printbin($l, false);
 			echo PHP_EOL;
@@ -74,7 +74,7 @@ class TreePreorderLabeling8Test {
 			"\x80\x7F\x7F\x80\x80"		=> 3,
 
 		) as $l => $e) {
-			$d = TreePreorderLabeling8::depth($l);
+			$d = PreorderLabeling8::depth($l);
 			echo $e, ' ', $d, ' ', $d === $e ? 'ok' : 'fail';
 			echo PHP_EOL;
 		}
@@ -82,14 +82,14 @@ class TreePreorderLabeling8Test {
 
 	public static function childsTest() {
 		self::sendHeader();
-		$a = TreePreorderLabeling8::childs('', 1000);
+		$a = PreorderLabeling8::childs('', 1000);
 		foreach($a as $l) self::printbin($l);
 		echo PHP_EOL;
 	}
 
 	public static function siblingsTest() {
 		self::sendHeader();
-		$a = TreePreorderLabeling8::siblings("\x7C", "\x7E", 1000);
+		$a = PreorderLabeling8::siblings("\x7C", "\x7E", 1000);
 		foreach($a as $l) self::printbin($l);
 		echo PHP_EOL;
 	}
@@ -130,7 +130,7 @@ class TreePreorderLabeling8Test {
 			"\x80\x7F\x7F\x80\x80"		=> 4,
 
 		) as $l => $e) {
-			$o = TreePreorderLabeling8::offset($l);
+			$o = PreorderLabeling8::offset($l);
 			echo $e, ' ', $o, ' ', $o === $e ? 'ok' : 'fail';
 			if($o != $e) self::printbin($l, false);
 			echo PHP_EOL;
@@ -170,7 +170,7 @@ class TreePreorderLabeling8Test {
 			"\x80\x7F\x7F\x80\x80"		=> "\x80",
 
 		) as $l => $e) {
-			$level = TreePreorderLabeling8::level($l);
+			$level = PreorderLabeling8::level($l);
 			echo $e === $level ? 'ok' : 'fail';
 			echo PHP_EOL;
 			if($level != $e) {
@@ -213,7 +213,7 @@ class TreePreorderLabeling8Test {
 			"\x80\x7F\x7F\x80\x80"		=> "\x80\x7F\x7F\x80",
 
 		) as $l => $e) {
-			$up = TreePreorderLabeling8::up($l);
+			$up = PreorderLabeling8::up($l);
 			echo $e === $up ? 'ok' : 'fail';
 			echo PHP_EOL;
 			if($up != $e) {
@@ -255,7 +255,7 @@ class TreePreorderLabeling8Test {
 			"\x80\x7F\x7F\x80\x80"		=> array("\x80", "\x80\x7F\x7F\x80"),
 
 		) as $l => $e) {
-			$ancestors = TreePreorderLabeling8::ancestors($l);
+			$ancestors = PreorderLabeling8::ancestors($l);
 			echo $e === $ancestors ? 'ok' : 'fail';
 			echo PHP_EOL;
 			if($ancestors !== $e) {
@@ -298,7 +298,7 @@ class TreePreorderLabeling8Test {
 			"\x80\x7F\x7F\x80\x80"		=> array("\x80", "\x7F\x7F\x80", "\x80"),
 
 		) as $l => $e) {
-			$split = TreePreorderLabeling8::split($l);
+			$split = PreorderLabeling8::split($l);
 			echo $e === $split ? 'ok' : 'fail';
 			echo PHP_EOL;
 			if($split !== $e) {
