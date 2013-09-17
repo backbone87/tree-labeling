@@ -13,6 +13,8 @@
 		},
 	],
 	"autoload": {
-		"classmap": [ "src/TreePreorderLabeling8.php" ]
+		"psr-0": {
+			"bbit\\util\\tree\\": "src/"
+		}
 	}
 }
